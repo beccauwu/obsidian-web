@@ -1,11 +1,11 @@
-import { AlertProps } from "@mui/material/Alert";
+import { AlertProps } from '@mui/material/Alert';
 
 export interface OutputPreset {
   name: string;
   urlTemplate: string;
   contentTemplate: string;
   headers: Record<string, string>;
-  method: "post" | "put" | "patch";
+  method: 'post' | 'put' | 'patch';
 }
 
 export interface ExtensionLocalSettings {
@@ -16,7 +16,7 @@ export interface ExtensionLocalSettings {
 
 export interface ContentCache {
   url?: string;
-  method?: "put" | "post" | "patch";
+  method?: 'put' | 'post' | 'patch';
   compiledUrl?: string;
   headers?: Record<string, string>;
   compiledContent?: string;
@@ -32,13 +32,13 @@ export interface ExtensionSyncSettings {
 }
 
 export interface AlertStatus {
-  severity: AlertProps["severity"];
+  severity: AlertProps['severity'];
   title: string;
   message: string;
 }
 
 export interface SandboxRenderRequest {
-  command: "render";
+  command: 'render';
   template: string;
   id: string;
   context: Record<string, any>;
@@ -52,11 +52,11 @@ export interface SandboxMessageBase {
 }
 
 export interface SandboxLoadedResponse extends SandboxMessageBase {
-  type: "loaded";
+  type: 'loaded';
 }
 
 export interface SandboxResponseBase extends SandboxMessageBase {
-  type: "response";
+  type: 'response';
 }
 
 export interface SandboxExceptionResponse extends SandboxResponseBase {

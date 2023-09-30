@@ -1,9 +1,9 @@
-import { getUrlMentions, getLocalSettings, obsidianRequest } from "./utils";
-import { ExtensionLocalSettings } from "./types";
+import { getUrlMentions, getLocalSettings, obsidianRequest } from './utils';
+import { ExtensionLocalSettings } from './types';
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const localSettings: ExtensionLocalSettings = await getLocalSettings(
-    chrome.storage.local
+    chrome.storage.local,
   );
   const url = tab.url;
 
@@ -11,7 +11,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     !localSettings ||
     !localSettings.apiKey ||
     !url ||
-    changeInfo.status !== "loading"
+    changeInfo.status !== 'loading'
   ) {
     return;
   }
@@ -20,12 +20,12 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     const mentions = await getUrlMentions(
       localSettings.apiKey,
       localSettings.insecureMode || false,
-      url
+      url,
     );
 
     if (mentions.direct.length > 0) {
       chrome.action.setBadgeBackgroundColor({
-        color: "#A68B36",
+        color: '#A68B36',
         tabId,
       });
       chrome.action.setBadgeText({
@@ -38,7 +38,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       });
     } else if (mentions.mentions.length > 0) {
       chrome.action.setBadgeBackgroundColor({
-        color: "#3D7D98",
+        color: '#3D7D98',
         tabId,
       });
       chrome.action.setBadgeText({
@@ -51,11 +51,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       });
     } else {
       chrome.action.setBadgeText({
-        text: "",
+        text: '',
         tabId,
       });
       chrome.action.setTitle({
-        title: "",
+        title: '',
         tabId,
       });
     }
@@ -65,39 +65,39 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         localSettings.apiKey,
         `/vault/${mention.filename}`,
         {
-          method: "get",
+          method: 'get',
           headers: {
-            Accept: "application/vnd.olrapi.note+json",
+            Accept: 'application/vnd.olrapi.note+json',
           },
         },
-        localSettings.insecureMode || false
+        localSettings.insecureMode || false,
       );
       const result = await mentionData.json();
 
-      if (result.frontmatter["web-badge-color"]) {
+      if (result.frontmatter['web-badge-color']) {
         chrome.action.setBadgeBackgroundColor({
-          color: result.frontmatter["web-badge-color"],
+          color: result.frontmatter['web-badge-color'],
           tabId,
         });
       }
-      if (result.frontmatter["web-badge-message"]) {
+      if (result.frontmatter['web-badge-message']) {
         chrome.action.setBadgeText({
-          text: result.frontmatter["web-badge-message"],
+          text: result.frontmatter['web-badge-message'],
           tabId,
         });
         chrome.action.setTitle({
-          title: result.frontmatter["web-badge-message"],
+          title: result.frontmatter['web-badge-message'],
           tabId,
         });
       }
     }
   } catch (e) {
     chrome.action.setBadgeBackgroundColor({
-      color: "#FF0000",
+      color: '#FF0000',
       tabId,
     });
     chrome.action.setBadgeText({
-      text: "ERR",
+      text: 'ERR',
       tabId,
     });
     console.error(e);

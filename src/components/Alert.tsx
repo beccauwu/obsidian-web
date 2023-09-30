@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import MaterialAlert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+import MaterialAlert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
-import { AlertStatus } from "../types";
+import { AlertStatus } from '../types';
 
 interface Props {
   value: AlertStatus;

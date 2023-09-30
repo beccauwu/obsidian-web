@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
-import { OutputPreset } from "../types";
-import HeaderControl from "./HeaderControl";
+import { OutputPreset } from '../types';
+import HeaderControl from './HeaderControl';
 
 interface Props {
-  method: OutputPreset["method"];
+  method: OutputPreset['method'];
   url: string;
   headers: Record<string, string>;
   content: string;
 
-  onChangeMethod: (method: OutputPreset["method"]) => void;
+  onChangeMethod: (method: OutputPreset['method']) => void;
   onChangeUrl: (url: string) => void;
   onChangeHeaders: (headers: Record<string, string>) => void;
   onChangeContent: (content: string) => void;
@@ -36,8 +36,8 @@ const RequestParameters: React.FC<Props> = ({
           <Select
             label="HTTP Method"
             value={method}
-            onChange={(event) =>
-              onChangeMethod(event.target.value as OutputPreset["method"])
+            onChange={event =>
+              onChangeMethod(event.target.value as OutputPreset['method'])
             }
           >
             <MenuItem value="post">POST</MenuItem>
@@ -48,7 +48,7 @@ const RequestParameters: React.FC<Props> = ({
             label="API URL"
             fullWidth={true}
             value={url}
-            onChange={(event) => onChangeUrl(event.target.value)}
+            onChange={event => onChangeUrl(event.target.value)}
           />
         </div>
       </div>
@@ -64,7 +64,7 @@ const RequestParameters: React.FC<Props> = ({
             fullWidth={true}
             multiline={true}
             value={content}
-            onChange={(event) => onChangeContent(event.target.value)}
+            onChange={event => onChangeContent(event.target.value)}
           />
         </div>
       </div>

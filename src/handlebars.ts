@@ -1,47 +1,47 @@
-import Handlebars from "handlebars";
-import { v4 as uuid } from "uuid";
-import { format as formatDate } from "date-fns";
+import Handlebars from 'handlebars';
+import { v4 as uuid } from 'uuid';
+import { format as formatDate } from 'date-fns';
 import {
   SandboxRequest,
   SandboxRenderResponse,
   SandboxRenderRequest,
-} from "./types";
+} from './types';
 
-Handlebars.registerHelper("quote", (value: string): string => {
+Handlebars.registerHelper('quote', (value: string): string => {
   const lines: string[] = [];
-  for (const rawLine of value.split("\n")) {
+  for (const rawLine of value.split('\n')) {
     lines.push(`> ${rawLine}`);
   }
-  return lines.join("\n");
+  return lines.join('\n');
 });
 
 Handlebars.registerHelper(
-  "date",
+  'date',
   (format: string | { [key: string]: string }): string => {
     const now = new Date();
-    let formatStr: string = "yyyy-MM-dd HH:mm:ss";
-    if (typeof format === "string") {
+    let formatStr = 'yyyy-MM-dd HH:mm:ss';
+    if (typeof format === 'string') {
       formatStr = format;
     }
     return formatDate(now, formatStr);
-  }
+  },
 );
 
-Handlebars.registerHelper("filename", (unsafe: string | undefined): string => {
-  if (typeof unsafe === "string") {
-    return unsafe.replace(/[/\\?%*:|"<>#]/g, "");
+Handlebars.registerHelper('filename', (unsafe: string | undefined): string => {
+  if (typeof unsafe === 'string') {
+    return unsafe.replace(/[/\\?%*:|"<>#]/g, '');
   }
-  return "";
+  return '';
 });
 
-Handlebars.registerHelper("json", (unsafe: string | undefined): string => {
-  if (typeof unsafe === "string") {
+Handlebars.registerHelper('json', (unsafe: string | undefined): string => {
+  if (typeof unsafe === 'string') {
     return JSON.stringify(unsafe);
   }
-  return "";
+  return '';
 });
 
-Handlebars.registerHelper("uuid", (): string => {
+Handlebars.registerHelper('uuid', (): string => {
   return uuid();
 });
 
@@ -49,7 +49,7 @@ const render = (request: SandboxRenderRequest): SandboxRenderResponse => {
   const compiled = Handlebars.compile(request.template, { noEscape: true });
 
   return {
-    type: "response",
+    type: 'response',
     success: true,
     request,
     rendered: compiled(request.context),
@@ -59,14 +59,14 @@ const render = (request: SandboxRenderRequest): SandboxRenderResponse => {
 function handleEvent(evt: MessageEvent<SandboxRequest>): void {
   const command = evt.data.command;
 
-  const debug = document.getElementById("debug");
+  const debug = document.getElementById('debug');
   if (debug) {
     debug.innerHTML = JSON.stringify(evt.data);
   }
 
   try {
     switch (command) {
-      case "render":
+      case 'render':
         (evt.source as WindowProxy).postMessage(render(evt.data), evt.origin);
         break;
       default:
@@ -79,10 +79,10 @@ function handleEvent(evt: MessageEvent<SandboxRequest>): void {
         request: evt.data,
         message: (e as Error).message,
       },
-      evt.origin
+      evt.origin,
     );
   }
 }
 
-window.addEventListener("message", handleEvent);
-window.parent.postMessage({ success: true, thpe: "loaded" }, "*");
+window.addEventListener('message', handleEvent);
+window.parent.postMessage({ success: true, thpe: 'loaded' }, '*');

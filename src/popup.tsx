@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import ReactDOM from "react-dom";
-import Turndown from "turndown";
-import { Readability } from "@mozilla/readability";
+import ReactDOM from 'react-dom';
+import Turndown from 'turndown';
+import { Readability } from '@mozilla/readability';
 
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import ThemeProvider from "@mui/system/ThemeProvider";
-import IconButton from "@mui/material/IconButton";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CircularProgress from "@mui/material/CircularProgress";
-import MaterialAlert from "@mui/material/Alert";
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import ThemeProvider from '@mui/system/ThemeProvider';
+import IconButton from '@mui/material/IconButton';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CircularProgress from '@mui/material/CircularProgress';
+import MaterialAlert from '@mui/material/Alert';
 
-import SendIcon from "@mui/icons-material/SaveAlt";
+import SendIcon from '@mui/icons-material/SaveAlt';
 
-import { PurpleTheme } from "./theme";
-import Alert from "./components/Alert";
+import { PurpleTheme } from './theme';
+import Alert from './components/Alert';
 import {
   AlertStatus,
   ContentCache,
@@ -29,7 +29,7 @@ import {
   OutputPreset,
   SearchJsonResponseItem,
   StatusResponse,
-} from "./types";
+} from './types';
 import {
   getLocalSettings,
   getSyncSettings,
@@ -40,10 +40,10 @@ import {
   getPageMetadata,
   setContentCache,
   normalizeCacheUrl,
-} from "./utils";
-import RequestParameters from "./components/RequestParameters";
-import { TurndownConfiguration } from "./constants";
-import MentionNotice from "./components/MentionNotice";
+} from './utils';
+import RequestParameters from './components/RequestParameters';
+import { TurndownConfiguration } from './constants';
+import MentionNotice from './components/MentionNotice';
 
 const Popup = () => {
   const [status, setStatus] = useState<AlertStatus>();
@@ -55,13 +55,13 @@ const Popup = () => {
   const [cacheData, setCacheData] = useState<ContentCache>({});
   const [cacheAvailable, setCacheAvailable] = useState<boolean>(false);
 
-  const [apiKey, setApiKey] = useState<string>("");
+  const [apiKey, setApiKey] = useState<string>('');
   const [insecureMode, setInsecureMode] = useState<boolean>(false);
 
-  const [url, setUrl] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [selection, setSelection] = useState<string>("");
-  const [pageContent, setPageContent] = useState<string>("");
+  const [url, setUrl] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [selection, setSelection] = useState<string>('');
+  const [pageContent, setPageContent] = useState<string>('');
 
   const [suggestionAccepted, setSuggestionAccepted] = useState<boolean>(false);
   const [mentions, setMentions] = useState<SearchJsonResponseItem[]>([]);
@@ -74,15 +74,15 @@ const Popup = () => {
 
   const [searchEnabled, setSearchEnabled] = useState<boolean>(false);
   const [searchMatchMentionTemplate, setSearchMatchMentionTemplate] =
-    useState<string>("");
+    useState<string>('');
   const [searchMatchDirectTemplate, setSearchMatchDirectTemplate] =
-    useState<string>("");
+    useState<string>('');
 
-  const [method, setMethod] = useState<OutputPreset["method"]>("post");
+  const [method, setMethod] = useState<OutputPreset['method']>('post');
   const [overrideUrl, setOverrideUrl] = useState<string>();
-  const [compiledUrl, setCompiledUrl] = useState<string>("");
+  const [compiledUrl, setCompiledUrl] = useState<string>('');
   const [headers, setHeaders] = useState<Record<string, string>>({});
-  const [compiledContent, setCompiledContent] = useState<string>("");
+  const [compiledContent, setCompiledContent] = useState<string>('');
 
   const [presets, setPresets] = useState<OutputPreset[]>([]);
   const [selectedPreset, setSelectedPreset] = useState<number>(0);
@@ -91,13 +91,13 @@ const Popup = () => {
 
   useEffect(() => {
     window.addEventListener(
-      "message",
+      'message',
       () => {
         setSandboxReady(true);
       },
       {
         once: true,
-      }
+      },
     );
   }, []);
 
@@ -110,14 +110,14 @@ const Popup = () => {
       try {
         const request = await obsidianRequest(
           apiKey,
-          "/",
-          { method: "get" },
-          insecureMode
+          '/',
+          { method: 'get' },
+          insecureMode,
         );
         const result: StatusResponse = await request.json();
         if (
-          result.status === "OK" &&
-          result.service.includes("Obsidian Local REST API")
+          result.status === 'OK' &&
+          result.service.includes('Obsidian Local REST API')
         ) {
           setObsidianUnavailable(false);
         } else {
@@ -139,9 +139,9 @@ const Popup = () => {
         localSettings = await getLocalSettings(chrome.storage.local);
       } catch (e) {
         setStatus({
-          severity: "error",
-          title: "Error",
-          message: "Could not get local settings!",
+          severity: 'error',
+          title: 'Error',
+          message: 'Could not get local settings!',
         });
         return;
       }
@@ -151,9 +151,9 @@ const Popup = () => {
         setPresets(syncSettings.presets);
       } catch (e) {
         setStatus({
-          severity: "error",
-          title: "Error",
-          message: "Could not get settings!",
+          severity: 'error',
+          title: 'Error',
+          message: 'Could not get settings!',
         });
         return;
       }
@@ -205,9 +205,9 @@ const Popup = () => {
         tab = tabs[0];
       } catch (e) {
         setStatus({
-          severity: "error",
-          title: "Error",
-          message: "Could not get current tab!",
+          severity: 'error',
+          title: 'Error',
+          message: 'Could not get current tab!',
         });
         return;
       }
@@ -222,20 +222,20 @@ const Popup = () => {
           func: () => {
             const selection = window.getSelection();
             if (!selection) {
-              return "";
+              return '';
             }
             const contents = selection.getRangeAt(0).cloneContents();
-            const node = document.createElement("div");
+            const node = document.createElement('div');
             node.appendChild(contents.cloneNode(true));
             return node.innerHTML;
           },
         });
         selectedText = htmlToMarkdown(
           selectedTextInjected[0].result,
-          tab.url ?? ""
+          tab.url ?? '',
         );
       } catch (e) {
-        selectedText = "";
+        selectedText = '';
       }
 
       let pageContent: string;
@@ -246,14 +246,14 @@ const Popup = () => {
         });
         pageContent = htmlToMarkdown(
           pageContentInjected[0].result,
-          tab.url ?? ""
+          tab.url ?? '',
         );
       } catch (e) {
-        pageContent = "";
+        pageContent = '';
       }
 
-      setUrl(tab.url ?? "");
-      setTitle(tab.title ?? "");
+      setUrl(tab.url ?? '');
+      setTitle(tab.title ?? '');
       setSelection(selectedText);
       setPageContent(pageContent);
     }
@@ -269,8 +269,8 @@ const Popup = () => {
       for (const ref of directReferences) {
         const meta = await getPageMetadata(apiKey, insecureMode, ref.filename);
 
-        if (typeof meta.frontmatter["web-badge-message"] === "string") {
-          messages.push(meta.frontmatter["web-badge-message"]);
+        if (typeof meta.frontmatter['web-badge-message'] === 'string') {
+          messages.push(meta.frontmatter['web-badge-message']);
         }
       }
 
@@ -321,10 +321,10 @@ const Popup = () => {
       }
       const compiledContent = await compileTemplate(
         preset.contentTemplate,
-        context
+        context,
       );
 
-      setMethod(preset.method as OutputPreset["method"]);
+      setMethod(preset.method as OutputPreset['method']);
       setHeaders(preset.headers);
       setCompiledContent(compiledContent);
       setReady(true);
@@ -373,7 +373,7 @@ const Popup = () => {
 
   const htmlToMarkdown = (html: string, baseUrl: string): string => {
     const tempDoc = document.implementation.createHTMLDocument();
-    const base = tempDoc.createElement("base");
+    const base = tempDoc.createElement('base');
     base.href = baseUrl;
     tempDoc.head.append(base);
     tempDoc.body.innerHTML = html;
@@ -382,7 +382,7 @@ const Popup = () => {
     if (parsed) {
       return turndown.turndown(parsed.content);
     }
-    return "";
+    return '';
   };
 
   const sendToObsidian = async () => {
@@ -395,7 +395,7 @@ const Popup = () => {
 
     const requestHeaders = {
       ...headers,
-      "Content-Type": "text/markdown",
+      'Content-Type': 'text/markdown',
     };
     const request: RequestInit = {
       method: method,
@@ -408,12 +408,12 @@ const Popup = () => {
         apiKey,
         compiledUrl,
         request,
-        insecureMode
+        insecureMode,
       );
     } catch (e) {
       setStatus({
-        severity: "error",
-        title: "Error",
+        severity: 'error',
+        title: 'Error',
         message: `Could not send content to Obsidian: ${e}`,
       });
       return;
@@ -422,23 +422,23 @@ const Popup = () => {
 
     if (result.status < 300) {
       setStatus({
-        severity: "success",
-        title: "All done!",
-        message: "Your content was sent to Obsidian successfully.",
+        severity: 'success',
+        title: 'All done!',
+        message: 'Your content was sent to Obsidian successfully.',
       });
       setTimeout(() => window.close(), 2000);
     } else {
       try {
         const body = JSON.parse(text);
         setStatus({
-          severity: "error",
-          title: "Error",
+          severity: 'error',
+          title: 'Error',
           message: `Could not send content to Obsidian: (Error Code ${body.errorCode}) ${body.message}`,
         });
       } catch (e) {
         setStatus({
-          severity: "error",
-          title: "Error",
+          severity: 'error',
+          title: 'Error',
           message: `Could not send content to Obsidian!: (Status Code ${result.status}) ${text}`,
         });
       }
@@ -447,7 +447,7 @@ const Popup = () => {
 
   const acceptSuggestion = (filename: string, template: string) => {
     const matchingPresetIdx = presets.findIndex(
-      (preset) => preset.name === template
+      preset => preset.name === template,
     );
     setOverrideUrl(`/vault/${filename}`);
     setSelectedPreset(matchingPresetIdx);
@@ -478,16 +478,16 @@ const Popup = () => {
                     label="Preset"
                     value={selectedPreset}
                     fullWidth={true}
-                    onChange={(event) =>
+                    onChange={event =>
                       setSelectedPreset(
-                        typeof event.target.value === "number"
+                        typeof event.target.value === 'number'
                           ? event.target.value
-                          : parseInt(event.target.value, 10)
+                          : parseInt(event.target.value, 10),
                       )
                     }
                   >
                     {cacheAvailable && (
-                      <MenuItem key={"cached"} value={-1}>
+                      <MenuItem key={'cached'} value={-1}>
                         <i>Saved Draft</i>
                       </MenuItem>
                     )}
@@ -530,7 +530,7 @@ const Popup = () => {
                 <>
                   {(mentions.length > 0 || directReferences.length > 0) && (
                     <div className="mentions">
-                      {directReferences.map((ref) => (
+                      {directReferences.map(ref => (
                         <MentionNotice
                           key={ref.filename}
                           type="direct"
@@ -545,12 +545,12 @@ const Popup = () => {
                       ))}
                       {mentions
                         .filter(
-                          (ref) =>
+                          ref =>
                             !directReferences.find(
-                              (d) => d.filename === ref.filename
-                            )
+                              d => d.filename === ref.filename,
+                            ),
                         )
-                        .map((ref) => (
+                        .map(ref => (
                           <MentionNotice
                             key={ref.filename}
                             type="mention"
@@ -581,7 +581,7 @@ const Popup = () => {
       )}
       {!ready && !obsidianUnavailable && (
         <div className="loading">
-          {" "}
+          {' '}
           <Typography paragraph={true}>
             Gathering page information...
           </Typography>
@@ -597,5 +597,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Popup />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
